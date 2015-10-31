@@ -86,7 +86,7 @@ memptr string_copy_from_core_string() {
 		return handler;
 	}
 
-	fprintf(stderr, "Memory Failue => system out of memory\n");
+	fprintf(stderr, "\nMemory Failue => system out of memory\n");
 	exit(0);
 }
 
@@ -110,7 +110,7 @@ memptr allocate_cons() {
 		return free_cons_stack[free_cons_stack_head--];
 	}
 
-	fprintf(stderr, "Memory Failue => system out of memory\n");
+	fprintf(stderr, "\nMemory Failue => system out of memory\n");
 	exit(0);
 }
 
@@ -125,7 +125,7 @@ void announce_allocation(int num_of_allocations) {
 		return;
 	}
 
-	fprintf(stderr, "Memory Failue => system out of memory\n");
+	fprintf(stderr, "\nMemory Failue => system out of memory\n");
 	exit(0);
 }
 
@@ -154,7 +154,7 @@ memptr allocate_string_from_buffer() {
 		return handler;
 	}
 
-	fprintf(stderr, "Memory Failue => system out of memory\n");
+	fprintf(stderr, "\nMemory Failue => system out of memory\n");
 	exit(0);
 }
 
@@ -200,7 +200,7 @@ void fill_root_set() {
 
 void mark_sweep() {
 
-	fprintf(stderr, "garbage collector start\n");
+	fprintf(stderr, "\ngarbage collector start\n");
 
 	SETBITS(cons_marks, MEM_SIZE);
 	SETBITS(handlers_marks, MEM_SIZE);
