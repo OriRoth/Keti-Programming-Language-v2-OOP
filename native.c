@@ -1,5 +1,11 @@
 #include "native.h"
 #include "system.h"
+#include "error.h"
+
+#define OBJECT_OPERATE_CORE (false)
+//#define DEBUG
+//#define DEFUN_SECURE_BODY
+//#define EXTENDED_SECURITY
 
 int fix_integer(int num) {
 	if (num & (1 << 13)) {
@@ -15,7 +21,43 @@ typedef enum {
 memptr do_join_operation(memptr func_expr, JoinOperation operation_type) {
 
 	if (num_nodes(func_expr) != 3) {
-
+#ifdef DEBUG
+		printf("1\n");
+#endif
+		switch (operation_type) {
+		case PLUS:
+			ERROR(ERROR_PLUS, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
+			break;
+		case MINUS:
+			ERROR(ERROR_MINUS, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
+			break;
+		case MULT:
+			ERROR(ERROR_MULT, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
+			break;
+		case DIV:
+			ERROR(ERROR_DIV, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
+			break;
+		case EQUAL:
+			ERROR(ERROR_EQUALS, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
+			break;
+		case SMALLER:
+			ERROR(ERROR_SMALLER, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
+			break;
+		case GREATER:
+			ERROR(ERROR_GREATER, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
+			break;
+		case OR:
+			ERROR(ERROR_OR, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
+			break;
+		case AND:
+			ERROR(ERROR_AND, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
+			break;
+		case XOR:
+			ERROR(ERROR_XOR, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
+			break;
+		default:
+			break;
+		}
 		return NOT_FOUND;
 	}
 
@@ -25,6 +67,43 @@ memptr do_join_operation(memptr func_expr, JoinOperation operation_type) {
 	cons_pool[local_security].cdrKind = NIL;
 	memptr first_param = resolve_expr(cons_pool[current_node].car);
 	if (first_param == NOT_FOUND) {
+#ifdef DEBUG
+		printf("2\n");
+#endif
+		switch (operation_type) {
+		case PLUS:
+			ERROR(ERROR_PLUS, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		case MINUS:
+			ERROR(ERROR_MINUS, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		case MULT:
+			ERROR(ERROR_MULT, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		case DIV:
+			ERROR(ERROR_DIV, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		case EQUAL:
+			ERROR(ERROR_EQUALS, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		case SMALLER:
+			ERROR(ERROR_SMALLER, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		case GREATER:
+			ERROR(ERROR_GREATER, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		case OR:
+			ERROR(ERROR_OR, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		case AND:
+			ERROR(ERROR_AND, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		case XOR:
+			ERROR(ERROR_XOR, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		default:
+			break;
+		}
 		return NOT_FOUND;
 	}
 	cons_pool[local_security].car = first_param;
@@ -43,6 +122,43 @@ memptr do_join_operation(memptr func_expr, JoinOperation operation_type) {
 	current_node = cons_pool[current_node].cdr;
 	memptr second_param = resolve_expr(cons_pool[current_node].car);
 	if (second_param == NOT_FOUND) {
+#ifdef DEBUG
+		printf("3\n");
+#endif
+		switch (operation_type) {
+		case PLUS:
+			ERROR(ERROR_PLUS, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		case MINUS:
+			ERROR(ERROR_MINUS, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		case MULT:
+			ERROR(ERROR_MULT, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		case DIV:
+			ERROR(ERROR_DIV, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		case EQUAL:
+			ERROR(ERROR_EQUALS, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		case SMALLER:
+			ERROR(ERROR_SMALLER, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		case GREATER:
+			ERROR(ERROR_GREATER, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		case OR:
+			ERROR(ERROR_OR, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		case AND:
+			ERROR(ERROR_AND, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		case XOR:
+			ERROR(ERROR_XOR, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+			break;
+		default:
+			break;
+		}
 		return NOT_FOUND;
 	}
 	cons_pool[local_security].cdr = second_param;
@@ -58,11 +174,48 @@ memptr do_join_operation(memptr func_expr, JoinOperation operation_type) {
 			|| operation_type == MULT || operation_type == DIV) {
 		if (first_param_type != TYPE_INTEGER
 				|| second_param_type != TYPE_INTEGER) {
+#ifdef DEBUG
+			printf("4\n");
+#endif
+			switch (operation_type) {
+			case PLUS:
+				ERROR(ERROR_PLUS, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case MINUS:
+				ERROR(ERROR_MINUS, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case MULT:
+				ERROR(ERROR_MULT, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case DIV:
+				ERROR(ERROR_DIV, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case EQUAL:
+				ERROR(ERROR_EQUALS, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case SMALLER:
+				ERROR(ERROR_SMALLER, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case GREATER:
+				ERROR(ERROR_GREATER, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case OR:
+				ERROR(ERROR_OR, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case AND:
+				ERROR(ERROR_AND, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case XOR:
+				ERROR(ERROR_XOR, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			default:
+				break;
+			}
 			return NOT_FOUND;
 		}
 		int first_value = fix_integer(cons_pool[first_param].car);
 		int second_value = fix_integer(cons_pool[second_param].car);
-		result = safe_allocate_cons();
+		result = allocate_cons();
 		cons_pool[result].carKind = INTEGER;
 		cons_pool[result].cdrKind = NIL;
 		switch (operation_type) {
@@ -77,6 +230,9 @@ memptr do_join_operation(memptr func_expr, JoinOperation operation_type) {
 			break;
 		case DIV:
 			if (second_value == 0) {
+#ifdef DEBUG
+				printf("5\n");
+#endif
 				return NOT_FOUND;
 			}
 			cons_pool[result].car = first_value / second_value;
@@ -87,7 +243,43 @@ memptr do_join_operation(memptr func_expr, JoinOperation operation_type) {
 	} else if (operation_type == EQUAL || operation_type == SMALLER
 			|| operation_type == GREATER) {
 		if (first_param_type != second_param_type) {
-			return NOT_FOUND;
+#ifdef DEBUG
+			printf("6\n");
+#endif
+			switch (operation_type) {
+			case PLUS:
+				ERROR(ERROR_PLUS, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case MINUS:
+				ERROR(ERROR_MINUS, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case MULT:
+				ERROR(ERROR_MULT, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case DIV:
+				ERROR(ERROR_DIV, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case EQUAL:
+				ERROR(ERROR_EQUALS, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case SMALLER:
+				ERROR(ERROR_SMALLER, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case GREATER:
+				ERROR(ERROR_GREATER, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case OR:
+				ERROR(ERROR_OR, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case AND:
+				ERROR(ERROR_AND, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case XOR:
+				ERROR(ERROR_XOR, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			default:
+				break;
+			}
 		}
 		int first_value;
 		int second_value;
@@ -158,6 +350,9 @@ memptr do_join_operation(memptr func_expr, JoinOperation operation_type) {
 			result = ((first_value > second_value) ? t : nil);
 			break;
 		default:
+#ifdef DEBUG
+			printf("7\n");
+#endif
 			return NOT_FOUND;
 			break;
 		}
@@ -165,6 +360,43 @@ memptr do_join_operation(memptr func_expr, JoinOperation operation_type) {
 			|| operation_type == AND) {
 		if (first_param_type != TYPE_NIL_TRUE
 				|| second_param_type != TYPE_NIL_TRUE) {
+#ifdef DEBUG
+			printf("7.5\n");
+#endif
+			switch (operation_type) {
+			case PLUS:
+				ERROR(ERROR_PLUS, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case MINUS:
+				ERROR(ERROR_MINUS, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case MULT:
+				ERROR(ERROR_MULT, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case DIV:
+				ERROR(ERROR_DIV, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case EQUAL:
+				ERROR(ERROR_EQUALS, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case SMALLER:
+				ERROR(ERROR_SMALLER, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case GREATER:
+				ERROR(ERROR_GREATER, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case OR:
+				ERROR(ERROR_OR, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case AND:
+				ERROR(ERROR_AND, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			case XOR:
+				ERROR(ERROR_XOR, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
+				break;
+			default:
+				break;
+			}
 			return NOT_FOUND;
 		}
 		switch (operation_type) {
@@ -178,6 +410,9 @@ memptr do_join_operation(memptr func_expr, JoinOperation operation_type) {
 			result = ((first_param == t && second_param == t) ? t : nil);
 			break;
 		default:
+#ifdef DEBUG
+			printf("8\n");
+#endif
 			return NOT_FOUND;
 			break;
 		}
@@ -249,6 +484,10 @@ memptr func_xor(memptr func_expr) {
 memptr func_cons(memptr func_expr) {
 
 	if (num_nodes(func_expr) != 3) {
+#ifdef DEBUG
+		printf("9\n");
+#endif
+		ERROR(ERROR_CONS, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
 		return NOT_FOUND;
 	}
 
@@ -264,9 +503,9 @@ memptr func_cons(memptr func_expr) {
 	cons_pool[res].carKind = CONS;
 	if (type(cons_pool[res].car) == TYPE_OBJECT) {
 		memptr lu = object_lookup(cons_pool[res].car, cons_pool[func_expr].car);
-		if (lu == NOT_FOUND) {
+		if (lu == NOT_FOUND && OBJECT_OPERATE_CORE) {
 			cons_pool[res].car = object_lookup(cons_pool[res].car, core_symbol);
-		} else {
+		} else if (lu != NOT_FOUND) {
 			return resolve_func_expr(func_expr, cons_pool[res].car, lu, true);
 		}
 	}
@@ -276,11 +515,8 @@ memptr func_cons(memptr func_expr) {
 	current_data = cons_pool[current_node].car;
 	cons_pool[res].cdr = resolve_expr(current_data);
 	cons_pool[res].cdrKind = CONS;
-	if (type(cons_pool[res].cdr) == TYPE_OBJECT) {
-		memptr lu = object_lookup(cons_pool[res].cdr, cons_pool[func_expr].car);
-		if (lu == NOT_FOUND) {
-			cons_pool[res].cdr = object_lookup(cons_pool[res].cdr, core_symbol);
-		}
+	if (type(cons_pool[res].cdr) == TYPE_OBJECT && OBJECT_OPERATE_CORE) {
+		cons_pool[res].cdr = object_lookup(cons_pool[res].cdr, core_symbol);
 	}
 
 	return res;
@@ -289,6 +525,10 @@ memptr func_cons(memptr func_expr) {
 memptr func_car(memptr func_expr) {
 
 	if (num_nodes(func_expr) != 2) {
+#ifdef DEBUG
+		printf("10\n");
+#endif
+		ERROR(ERROR_CAR, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
 		return NOT_FOUND;
 	}
 
@@ -325,13 +565,20 @@ memptr func_car(memptr func_expr) {
 		}
 		break;
 	}
-
+#ifdef DEBUG
+	printf("11\n");
+#endif
+	ERROR(ERROR_CAR, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
 	return NOT_FOUND;
 }
 
 memptr func_cdr(memptr func_expr) {
 
 	if (num_nodes(func_expr) != 2) {
+#ifdef DEBUG
+		printf("12\n");
+#endif
+		ERROR(ERROR_CDR, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
 		return NOT_FOUND;
 	}
 
@@ -370,16 +617,33 @@ memptr func_cdr(memptr func_expr) {
 		break;
 	}
 
+#ifdef DEBUG
+	printf("13\n");
+#endif
+	ERROR(ERROR_CDR, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
 	return NOT_FOUND;
 }
 
 memptr func_nil(memptr func_expr) {
 
 	if (num_nodes(func_expr) != 2) {
+#ifdef DEBUG
+		printf("14\n");
+#endif
+		ERROR(ERROR_NIL, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
 		return NOT_FOUND;
 	}
 
+#ifdef EXTENDED_SECURITY
+	memptr local_security = safe_allocate_cons();
+	cons_pool[local_security].carKind = NIL;
+	cons_pool[local_security].cdrKind = NIL;
+#endif
 	memptr param = resolve_expr(cons_pool[cons_pool[func_expr].cdr].car);
+#ifdef EXTENDED_SECURITY
+	cons_pool[local_security].car = param;
+	cons_pool[local_security].carKind = CONS;
+#endif
 	if (type(param) == TYPE_OBJECT) {
 		memptr lu = object_lookup(param, cons_pool[func_expr].car);
 		if (lu == NOT_FOUND) {
@@ -394,10 +658,23 @@ memptr func_nil(memptr func_expr) {
 memptr func_true(memptr func_expr) {
 
 	if (num_nodes(func_expr) != 2) {
+#ifdef DEBUG
+		printf("15\n");
+#endif
+		ERROR(ERROR_TRUE, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
 		return NOT_FOUND;
 	}
 
+#ifdef EXTENDED_SECURITY
+	memptr local_security = safe_allocate_cons();
+	cons_pool[local_security].carKind = NIL;
+	cons_pool[local_security].cdrKind = NIL;
+#endif
 	memptr param = resolve_expr(cons_pool[cons_pool[func_expr].cdr].car);
+#ifdef EXTENDED_SECURITY
+	cons_pool[local_security].car = param;
+	cons_pool[local_security].carKind = CONS;
+#endif
 	if (type(param) == TYPE_OBJECT) {
 		memptr lu = object_lookup(param, cons_pool[func_expr].car);
 		if (lu == NOT_FOUND) {
@@ -413,6 +690,10 @@ memptr func_cond(memptr func_expr) {
 
 	if (num_nodes(func_expr) == 1) {
 		// no parameters
+#ifdef DEBUG
+		printf("16\n");
+#endif
+		ERROR(ERROR_COND, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
 		return NOT_FOUND;
 	}
 
@@ -432,26 +713,52 @@ memptr func_cond(memptr func_expr) {
 			// "function" support (interpreted as a function by the translator)
 			current_data = cons_pool[current_data].car;
 			if (num_nodes(current_data) != 2) {
+#ifdef DEBUG
+				printf("17\n");
+#endif
+				ERROR(ERROR_COND, ERROR_FAILURE, ERROR_INVALID, ERROR_MALFORMED);
 				return NOT_FOUND;
 			}
 			condition = cons_pool[current_data].car;
 			result = cons_pool[cons_pool[current_data].cdr].car;
 		} else {
 			// invalid
+#ifdef DEBUG
+			printf("18\n");
+#endif
+			ERROR(ERROR_COND, ERROR_FAILURE, ERROR_INVALID, ERROR_MALFORMED);
 			return NOT_FOUND;
 		}
 
 		memptr condition_result = resolve_expr(condition);
 		if (condition_result == NOT_FOUND) {
+#ifdef DEBUG
+			printf("19\n");
+#endif
+			ERROR(ERROR_COND, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
 			return NOT_FOUND;
 		} else if (condition_result != nil && condition_result != t) {
+#ifdef DEBUG
+			printf("20\n");
+#endif
+			ERROR(ERROR_COND, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
 			return NOT_FOUND;
 		}
 		if (condition_result == t) {
+#ifdef EXTENDED_SECURITY
+			memptr local_security = safe_allocate_cons();
+			cons_pool[local_security].car = result;
+			cons_pool[local_security].carKind = CONS;
+			cons_pool[local_security].cdrKind = NIL;
+#endif
 			return resolve_expr(result);
 		}
 	}
 
+#ifdef DEBUG
+	printf("21\n");
+#endif
+	ERROR(ERROR_COND, ERROR_FAILURE, ERROR_INVALID, ERROR_MALFORMED);
 	return NOT_FOUND;
 }
 
@@ -459,14 +766,26 @@ memptr func_setq(memptr func_expr) {
 
 	if (num_nodes(func_expr) != 3) {
 		// invalid call
+#ifdef DEBUG
+		printf("22\n");
+#endif
+		ERROR(ERROR_SETQ, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
 		return NOT_FOUND;
 	}
+
+	memptr local_security = safe_allocate_cons();
+	cons_pool[local_security].carKind = NIL;
+	cons_pool[local_security].cdrKind = NIL;
 
 	memptr current_node = cons_pool[func_expr].cdr;
 	memptr current_param = cons_pool[current_node].car;
 	Type first_type = type(current_param);
 	if (first_type != TYPE_SYMBOL) {
 		// first argument not a name
+#ifdef DEBUG
+		printf("23\n");
+#endif
+		ERROR(ERROR_SETQ, ERROR_FAILURE, ERROR_INVALID, ERROR_MALFORMED);
 		return NOT_FOUND;
 	}
 	memptr symbol_name = current_param;
@@ -476,11 +795,19 @@ memptr func_setq(memptr func_expr) {
 	memptr value = resolve_expr(current_param);
 	if (value == NOT_FOUND) {
 		// invalid value
+#ifdef DEBUG
+		printf("24\n");
+#endif
+		ERROR(ERROR_SETQ, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
 		return NOT_FOUND;
 	}
+	cons_pool[local_security].car = value;
+	cons_pool[local_security].carKind = CONS;
 
 	// defining the new symbol
 	memptr symbol = allocate_cons();
+	cons_pool[local_security].cdr = symbol;
+	cons_pool[local_security].cdrKind = CONS;
 	cons_pool[symbol].car = cons_pool[symbol_name].car;
 	cons_pool[symbol].carKind = STRING;
 	cons_pool[symbol].cdr = value;
@@ -488,11 +815,11 @@ memptr func_setq(memptr func_expr) {
 	memptr env = lookup(symbol, ENVIRONMENT);
 	if (env == NOT_FOUND) {
 		// inserting to current environment
-		insert_symbol(environment, symbol);
+		insert_symbol(environment, symbol); // includes 1 allocation
 	} else {
 		// replacing previous interpretation
 		remove_symbol(env, symbol);
-		insert_symbol(env, symbol);
+		insert_symbol(env, symbol); // includes 1 allocation
 	}
 
 	return value;
@@ -501,12 +828,20 @@ memptr func_setq(memptr func_expr) {
 memptr func_defun(memptr func_expr) {
 
 	if (num_nodes(func_expr) != 4) {
+#ifdef DEBUG
+		printf("25\n");
+#endif
+		ERROR(ERROR_DEFUN, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
 		return NOT_FOUND;
 	}
 
 	memptr name = cons_pool[cons_pool[func_expr].cdr].car;
 	if (cons_pool[name].carKind != STRING || cons_pool[name].cdrKind != CONS) {
 		// first argument not a name
+#ifdef DEBUG
+		printf("26\n");
+#endif
+		ERROR(ERROR_DEFUN, ERROR_FAILURE, ERROR_INVALID, ERROR_MALFORMED);
 		return NOT_FOUND;
 	}
 
@@ -515,6 +850,10 @@ memptr func_defun(memptr func_expr) {
 		if (cons_pool[parameters].carKind != CONS
 				|| cons_pool[parameters].cdrKind != NIL) {
 			// second argument not a parameters list
+#ifdef DEBUG
+			printf("27\n");
+#endif
+			ERROR(ERROR_DEFUN, ERROR_FAILURE, ERROR_INVALID, ERROR_MALFORMED);
 			return NOT_FOUND;
 		}
 
@@ -527,6 +866,10 @@ memptr func_defun(memptr func_expr) {
 			if (cons_pool[current_param].carKind != STRING
 					|| cons_pool[current_param].cdrKind != CONS) {
 				// a parameter is not a name
+#ifdef DEBUG
+				printf("28\n");
+#endif
+				ERROR(ERROR_DEFUN, ERROR_FAILURE, ERROR_INVALID, ERROR_MALFORMED);
 				return NOT_FOUND;
 			}
 			next_param_node = cons_pool[next_param_node].cdr;
@@ -561,6 +904,12 @@ memptr func_defun(memptr func_expr) {
 	cons_pool[current].cdrKind = NIL;
 	cons_pool[current].car =
 			cons_pool[cons_pool[cons_pool[cons_pool[func_expr].cdr].cdr].cdr].car;
+#ifdef DEFUN_SECURE_BODY
+	memptr local_security = safe_allocate_cons();
+	cons_pool[local_security].car = cons_pool[current].car;
+	cons_pool[local_security].carKind = CONS;
+	cons_pool[local_security].cdrKind = NIL;
+#endif
 
 	// hashing the function into the system
 	memptr env = lookup(function, ENVIRONMENT);
@@ -590,10 +939,20 @@ memptr func_list(memptr func_expr) {
 	current_node = cons_pool[func_expr].cdr;
 	current_param = resolve_expr(cons_pool[current_node].car);
 	if (current_param == NOT_FOUND) {
+#ifdef DEBUG
+		printf("29\n");
+#endif
+		ERROR(ERROR_LIST, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
 		return NOT_FOUND;
 	} else if (type(current_param) == TYPE_OBJECT) {
 		memptr lu = object_lookup(current_param, cons_pool[func_expr].car);
 		if (lu != NOT_FOUND) {
+#ifdef EXTENDED_SECURITY
+			memptr local_security = safe_allocate_cons();
+			cons_pool[local_security].car = current_param;
+			cons_pool[local_security].carKind = CONS;
+			cons_pool[local_security].cdrKind = NIL;
+#endif
 			return resolve_func_expr(func_expr, current_param, lu, true);
 		}
 	}
@@ -611,6 +970,10 @@ memptr func_list(memptr func_expr) {
 
 		current_param = resolve_expr(cons_pool[current_node].car);
 		if (current_param == NOT_FOUND) {
+#ifdef DEBUG
+			printf("30\n");
+#endif
+			ERROR(ERROR_LIST, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
 			return NOT_FOUND;
 		}
 		cons_pool[current_dup_node].car = current_param;
@@ -626,15 +989,32 @@ memptr func_list(memptr func_expr) {
 memptr func_value(memptr func_expr) {
 
 	if (num_nodes(func_expr) < 2) {
+#ifdef DEBUG
+		printf("31\n");
+#endif
+		ERROR(ERROR_VALUE, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
 		return NOT_FOUND;
 	}
 
 	memptr next_node = cons_pool[func_expr].cdr, current_node, current_value;
 	bool first_param = true;
 	do {
+#ifdef EXTENDED_SECURITY
+		memptr local_security = safe_allocate_cons();
+		cons_pool[local_security].carKind = NIL;
+		cons_pool[local_security].cdrKind = NIL;
+#endif
 		current_node = next_node;
 		current_value = resolve_expr(cons_pool[current_node].car);
+#ifdef EXTENDED_SECURITY
+		cons_pool[local_security].car = current_value;
+		cons_pool[local_security].carKind = CONS;
+#endif
 		if (current_value == NOT_FOUND) {
+#ifdef DEBUG
+			printf("32\n");
+#endif
+			ERROR(ERROR_VALUE, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
 			return NOT_FOUND;
 		} else if (first_param && (type(current_value) == TYPE_OBJECT)) {
 			memptr lu = object_lookup(current_value, cons_pool[func_expr].car);
@@ -652,6 +1032,10 @@ memptr func_value(memptr func_expr) {
 memptr func_assign(memptr func_expr) {
 
 	if (num_nodes(func_expr) != 4) {
+#ifdef DEBUG
+		printf("33\n");
+#endif
+		ERROR(ERROR_ASSIGN, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
 		return NOT_FOUND;
 	}
 
@@ -668,6 +1052,10 @@ memptr func_assign(memptr func_expr) {
 	// first resolve the object, then the value
 	obj = resolve_expr(obj);
 	if (obj == NOT_FOUND) {
+#ifdef DEBUG
+		printf("34\n");
+#endif
+		ERROR(ERROR_ASSIGN, ERROR_FAILURE, ERROR_INVALID, ERROR_MALFORMED);
 		return NOT_FOUND;
 	}
 	cons_pool[local_security].car = obj;
@@ -675,6 +1063,10 @@ memptr func_assign(memptr func_expr) {
 
 	value = resolve_expr(value);
 	if (value == NOT_FOUND) {
+#ifdef DEBUG
+		printf("35\n");
+#endif
+		ERROR(ERROR_ASSIGN, ERROR_FAILURE, ERROR_INVALID, ERROR_MALFORMED);
 		return NOT_FOUND;
 	}
 	cons_pool[local_security].cdr = value;
@@ -683,13 +1075,14 @@ memptr func_assign(memptr func_expr) {
 	memptr result = NOT_FOUND;
 	if (type(obj) == TYPE_OBJECT) {
 
+		announce_allocation(2);
 		memptr new_symbol = allocate_cons();
 		cons_pool[new_symbol].car = cons_pool[symbol].car;
 		cons_pool[new_symbol].carKind = STRING;
 		cons_pool[new_symbol].cdr = value;
 		cons_pool[new_symbol].cdrKind = CONS;
 		object_remove_symbol(obj, new_symbol);
-		object_insert_symbol(obj, new_symbol);
+		object_insert_symbol(obj, new_symbol); // includes 1 allocation
 		result = obj;
 	} else {
 
@@ -778,6 +1171,10 @@ static bool supps(memptr value, memptr symbol) {
 memptr func_supps(memptr func_expr) {
 
 	if (num_nodes(func_expr) != 3) {
+#ifdef DEBUG
+		printf("36\n");
+#endif
+		ERROR(ERROR_SUPPS, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
 		return NOT_FOUND;
 	}
 
@@ -785,6 +1182,10 @@ memptr func_supps(memptr func_expr) {
 	memptr value = resolve_expr(
 			cons_pool[cons_pool[cons_pool[func_expr].cdr].cdr].car);
 	if (value == NOT_FOUND) {
+#ifdef DEBUG
+		printf("37\n");
+#endif
+		ERROR(ERROR_SUPPS, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
 		return NOT_FOUND;
 	}
 
