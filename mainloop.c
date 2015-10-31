@@ -1,4 +1,5 @@
 #include "system.h"
+#include "error.h"
 #include <stdio.h>
 
 #define MARK_OBJECTS true
@@ -112,6 +113,7 @@ int translate_function(memptr parent, int start) {
 				len++;
 			if (iter >= INPUT_BUFFER_SIZE) {
 				is_nil = false;
+				ERROR(ERROR_LINE, ERROR_FAILURE, ERROR_INVALID, ERROR_ROW);
 				return SYNTAX_ERROR;
 			}
 			if (len == 0) {
@@ -167,7 +169,10 @@ int translate_function(memptr parent, int start) {
 void print_result(memptr result, int depth) {
 
 	if (result == NOT_FOUND) {
-		fprintf(stderr, "undefined error");
+		if (error) {
+			error = false;
+			fprintf(stdout, "%s", error_buffer);
+		}
 	} else if (depth >= MAX_DEPTH) {
 		fprintf(stdout, "...");
 	} else {
@@ -234,7 +239,7 @@ void print_logo() {
 by Ori Roth\n\n");
 }
 
-#define PRINT_LIMIT 200
+#define PRINT_LIMIT MEM_SIZE
 void print_mem() {
 	printf("environment: %d\ncore_symbol: %d\n", environment, core_symbol);
 	for (int i = 0; i < PRINT_LIMIT; i++) {
@@ -270,7 +275,7 @@ int main(int argc, char *argv[]) {
 
 	if (argc > 1) {
 		stdin_backup = dup(stdin);
-		input = fopen(argv[1], "r+");
+		input = fopen(argv[1], "r");
 	} else {
 		input = stdin;
 		done_reading = true;
@@ -331,7 +336,6 @@ int main(int argc, char *argv[]) {
 			while (get_input(input) != 10)
 				;
 			fprintf(stdout, ".\n");
-			print_mem();
 		}
 
 		fflush(stderr);
