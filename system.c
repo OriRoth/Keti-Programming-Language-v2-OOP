@@ -1,6 +1,10 @@
 #include "system.h"
 #include "native.h"
+#include "error.h"
 #include <stdio.h>
+
+//#define DEBUG
+//#define EXTENDED_SECURITY
 
 char native_names_buffer[NATIVE_NAME_LIMIT * BUILTIN_BUFFER_SIZE] = { '+', '\0',
 		'\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0',
@@ -313,9 +317,14 @@ memptr lookup(memptr expr, LookUp lu) {
 static bool create_environment(memptr values_list, memptr parameters_list,
 		memptr first_param, bool first_param_computed) {
 
+	memptr local_security = safe_allocate_cons();
+	cons_pool[local_security].carKind = NIL;
+	cons_pool[local_security].cdrKind = NIL;
+
 	int values_size = num_nodes(values_list), parameters_size = num_nodes(
 			parameters_list);
 	if (values_size != parameters_size) {
+		ERROR(ERROR_LINE, ERROR_FAILURE, ERROR_INVALID, ERROR_COUNT);
 		return false;
 	}
 
@@ -332,7 +341,9 @@ static bool create_environment(memptr values_list, memptr parameters_list,
 			current_param_node, next_param_node = parameters_list,
 			current_param, current_value_resolved, current_param_dup;
 
-	memptr dup_list = safe_allocate_cons(), dup_list_end = NOT_FOUND;
+	memptr dup_list = allocate_cons(), dup_list_end = NOT_FOUND;
+	cons_pool[local_security].cdr = dup_list;
+	cons_pool[local_security].cdrKind = CONS;
 	cons_pool[dup_list].carKind = NIL;
 	cons_pool[dup_list].cdrKind = NIL;
 	bool first = true;
@@ -346,8 +357,11 @@ static bool create_environment(memptr values_list, memptr parameters_list,
 				(first_param_computed && first) ?
 						first_param : resolve_expr(current_value);
 		if (current_value_resolved == NOT_FOUND) {
+			ERROR(ERROR_LINE, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
 			return false;
 		}
+		cons_pool[local_security].car = current_value_resolved;
+		cons_pool[local_security].carKind = CONS;
 
 		announce_allocation(2);
 		current_param_dup = allocate_cons();
@@ -372,6 +386,7 @@ static bool create_environment(memptr values_list, memptr parameters_list,
 		next_value_node = cons_pool[current_value_node].cdr;
 		next_param_node = cons_pool[current_param_node].cdr;
 		first = false;
+		cons_pool[local_security].carKind = NIL;
 	} while (cons_pool[current_value_node].cdrKind == CONS);
 
 	memptr temp = environment;
@@ -400,18 +415,37 @@ memptr resolve_expr(memptr expr) {
 	}
 
 	if (expr_type == TYPE_USER_FUNCTION) {
-		return resolve_func_expr(cons_pool[expr].car, NOT_FOUND, NOT_FOUND, false);
+		return resolve_func_expr(cons_pool[expr].car, NOT_FOUND, NOT_FOUND,
+		false);
 	}
 
 	if (expr_type == TYPE_SYMBOL) {
 		return lookup(expr, DATA);
 	}
 
+#ifdef DEBUG
+	printf("38\n");
+#endif
+	ERROR(ERROR_LINE, ERROR_FAILURE, ERROR_INVALID, ERROR_EMPTY);
 	return NOT_FOUND;
 }
 
 memptr resolve_func_expr(memptr func_expr, memptr first_param,
 		memptr optional_func_body, bool internal_object_function) {
+
+#ifdef EXTENDED_SECURITY
+	if (internal_object_function) {
+		memptr advenced_security = safe_allocate_cons();
+		cons_pool[advenced_security].car = first_param;
+		cons_pool[advenced_security].carKind = CONS;
+		cons_pool[advenced_security].cdr = optional_func_body;
+		cons_pool[advenced_security].cdrKind = CONS;
+	}
+#endif
+
+	memptr local_security = safe_allocate_cons();
+	cons_pool[local_security].carKind = NIL;
+	cons_pool[local_security].cdrKind = NIL;
 
 	memptr func_symbol = cons_pool[func_expr].car;
 	memptr func_body;
@@ -420,6 +454,8 @@ memptr resolve_func_expr(memptr func_expr, memptr first_param,
 	func_body =
 			internal_object_function ?
 					optional_func_body : resolve_expr(cons_pool[func_expr].car);
+	cons_pool[local_security].car = func_body;
+	cons_pool[local_security].carKind = CONS;
 	func_body_type = type(func_body);
 	if (func_body_type == TYPE_NATIVE_FUNCTION) {
 		// builtin function
@@ -432,6 +468,8 @@ memptr resolve_func_expr(memptr func_expr, memptr first_param,
 				internal_object_function ?
 						first_param :
 						resolve_expr(cons_pool[cons_pool[func_expr].cdr].car);
+		cons_pool[local_security].cdr = first_param;
+		cons_pool[local_security].cdrKind = CONS;
 		internal_object_function = true;
 		if ((type(first_param) == TYPE_OBJECT)
 				&& (type(func_symbol) == TYPE_SYMBOL)) {
@@ -443,6 +481,7 @@ memptr resolve_func_expr(memptr func_expr, memptr first_param,
 					return lu;
 				}
 				func_body = lu;
+				cons_pool[local_security].car = func_body;
 				func_body_type = type(func_body);
 			}
 		}
@@ -456,6 +495,9 @@ memptr resolve_func_expr(memptr func_expr, memptr first_param,
 				cons_pool[cons_pool[func_body].car].car, first_param,
 				internal_object_function);
 		if (!create_environment_success) {
+#ifdef DEBUG
+			printf("39\n");
+#endif
 			return NOT_FOUND;
 		} else {
 			memptr result = resolve_expr(
@@ -465,5 +507,9 @@ memptr resolve_func_expr(memptr func_expr, memptr first_param,
 		}
 	}
 
+#ifdef DEBUG
+	printf("40\n");
+#endif
+	ERROR(ERROR_LINE, ERROR_FAILURE, ERROR_INVALID, ERROR_MALFORMED);
 	return NOT_FOUND;
 }
